@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { App } from './App'
+import { App } from '../../../src/App'
 
 test('renders application title', () => {
   render(<App title={ 'Simple React Application on test' }/>)
