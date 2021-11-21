@@ -12,7 +12,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "eslint -c .eslintrc.js tests src"
+    "test:ci": "react-scripts test --ci=true",
+    "lint": "eslint -c .eslintrc.js src"
   },
   "dependencies": {
     "bootswatch": "^5.1.3",

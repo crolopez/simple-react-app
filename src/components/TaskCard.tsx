@@ -5,7 +5,7 @@ interface Props {
   deleteTask: (id: number) => void
 }
 
-export default function TaskCard({ task, deleteTask }: Props) {
+export default function TaskCard({ task, deleteTask }: Props): JSX.Element {
   return (
     <div className='card card-body bg-primary rounded-0'>
       <h2>{task.title}</h2>

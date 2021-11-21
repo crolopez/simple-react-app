@@ -7,7 +7,7 @@ interface Props {
   deleteTask: (id: number) => void
 }
 
-export default function TaskList({ tasks, deleteTask }: Props) {
+export default function TaskList({ tasks, deleteTask }: Props): JSX.Element {
   return (
     <>
       {

@@ -7,7 +7,7 @@ import TaskList from './components/TaskList'
 import TaskForm from './components/TaskForm'
 import { SimpleTask } from './types/SimpleTask'
 
-export function App({ title }: Props) {
+export function App({ title }: Props): JSX.Element {
 
   const [tasks, setTasks] = useState<Task[]>([
     {

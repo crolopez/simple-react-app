@@ -13,7 +13,7 @@ const initialState = {
   description: '',
 }
 
-export default function TaskForm({addNewTask}: Props) {
+export default function TaskForm({addNewTask}: Props): JSX.Element {
   const [task, setTask] = useState<SimpleTask>(initialState)
   const inputTitle = useRef<HTMLInputElement>(null)
 
