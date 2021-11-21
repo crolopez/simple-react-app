@@ -10,7 +10,7 @@ interface Props {
 
 const initialState = {
   title: '',
-  description: ''
+  description: '',
 }
 
 export default function TaskForm({addNewTask}: Props) {

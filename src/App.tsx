@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import './App.css';
-import { Props } from './types/Props';
-import { Task } from './types/Task';
+import React, { useState } from 'react'
+import './App.css'
+import { Props } from './types/Props'
+import { Task } from './types/Task'
 import logo from './logo.svg'
-import TaskList from './components/TaskList';
-import TaskForm from './components/TaskForm';
-import { SimpleTask } from './types/SimpleTask';
+import TaskList from './components/TaskList'
+import TaskForm from './components/TaskForm'
+import { SimpleTask } from './types/SimpleTask'
 
 export function App({ title }: Props) {
 
@@ -14,8 +14,8 @@ export function App({ title }: Props) {
       id: 1,
       title: 'Default task',
       description: 'Default task description',
-      completed: false
-    }
+      completed: false,
+    },
   ])
 
   const getNewId = (): number => {
@@ -30,7 +30,7 @@ export function App({ title }: Props) {
     const newTask = {
       ...simpleTask,
       id: getNewId(),
-      completed: false
+      completed: false,
     }
     setTasks([...tasks, newTask])
   }
@@ -59,5 +59,5 @@ export function App({ title }: Props) {
         </div>
       </main>
     </div>
-  );
+  )
 }
