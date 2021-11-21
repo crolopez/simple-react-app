@@ -1,21 +1,21 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react'
-import { SimpleTask } from '../types/SimpleTask'
+import { ChangeEvent, FormEvent, useContext, useRef, useState } from 'react'
+import { AddNewTaskContext } from '../Contexts'
+import { Task } from '../types/Task'
 
 type HandleInputChange = ChangeEvent<HTMLInputElement|HTMLTextAreaElement>
 type HandleSave = FormEvent<HTMLFormElement>
 
-interface Props {
-  addNewTask: (simpleTask: SimpleTask) => void
-}
-
-const initialState = {
+const initialState: Task = {
+  id: 0,
   title: '',
   description: '',
+  completed: false
 }
 
-export default function TaskForm({addNewTask}: Props): JSX.Element {
-  const [task, setTask] = useState<SimpleTask>(initialState)
+export default function TaskForm(): JSX.Element {
+  const [task, setTask] = useState<Task>(initialState)
   const inputTitle = useRef<HTMLInputElement>(null)
+  const addNewTask = useContext(AddNewTaskContext)
 
   const handleInputChange = (event: HandleInputChange) => {
     const {name, value} = event.target

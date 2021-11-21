@@ -1,19 +1,18 @@
-import React from 'react'
-import { Task } from '../types/Task'
+import { useContext } from 'react'
+import { TaskContext, TasksContext } from '../Contexts'
 import TaskCard from './TaskCard'
 
-interface Props {
-  tasks: Task[],
-  deleteTask: (id: number) => void
-}
+export default function TaskList(): JSX.Element {
+  const tasks = useContext(TasksContext)
 
-export default function TaskList({ tasks, deleteTask }: Props): JSX.Element {
   return (
     <>
       {
         tasks.map(task => (
           <div className='col-md-4 pb-2' key={task.id}>
-            <TaskCard task={task} deleteTask={deleteTask}/>
+            <TaskContext.Provider value={task}>
+              <TaskCard/>
+            </TaskContext.Provider>
           </div>
         ))
       }

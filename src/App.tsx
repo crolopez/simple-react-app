@@ -5,7 +5,7 @@ import { Task } from './types/Task'
 import logo from './logo.svg'
 import TaskList from './components/TaskList'
 import TaskForm from './components/TaskForm'
-import { SimpleTask } from './types/SimpleTask'
+import { AddNewTaskContext, DeleteTaskContext, TasksContext } from './Contexts'
 
 export function App({ title }: Props): JSX.Element {
 
@@ -26,7 +26,7 @@ export function App({ title }: Props): JSX.Element {
     setTasks(tasks.filter(task => task.id !== id))
   }
 
-  const addNewTask = (simpleTask: SimpleTask): void => {
+  const addNewTask = (simpleTask: Task): void => {
     const newTask = {
       ...simpleTask,
       id: getNewId(),
@@ -49,11 +49,17 @@ export function App({ title }: Props): JSX.Element {
       <main className='container p-4'>
         <div className="row">
           <div className='col-md-4'>
-            <TaskForm addNewTask={addNewTask}/>
+            <AddNewTaskContext.Provider value={addNewTask}>
+              <TaskForm/>
+            </AddNewTaskContext.Provider>
           </div>
           <div className='col-md-8'>
             <div className='row'>
-              <TaskList tasks={tasks} deleteTask={deleteTask}/>
+              <DeleteTaskContext.Provider value={deleteTask}>
+                <TasksContext.Provider value={tasks}>
+                  <TaskList/>
+                </TasksContext.Provider>
+              </DeleteTaskContext.Provider>
             </div>
           </div>
         </div>
