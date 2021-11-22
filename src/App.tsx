@@ -5,18 +5,12 @@ import { Task } from './types/Task'
 import logo from './logo.svg'
 import TaskList from './components/TaskList'
 import TaskForm from './components/TaskForm'
-import { AddNewTaskContext, DeleteTaskContext, TasksContext } from './Contexts'
+import { AddNewTaskContext, DeleteTaskContext, TaskContext, TasksContext, TaskStateContext } from './Contexts'
+import { defaultTask } from './helpers/defaultTask'
 
 export function App({ title }: Props): JSX.Element {
-
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: 1,
-      title: 'Default task',
-      description: 'Default task description',
-      completed: false,
-    },
-  ])
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [formTask, setFormTask] = useState<Task>(defaultTask)
 
   const getNewId = (): number => {
     return new Date().getTime()
@@ -50,7 +44,9 @@ export function App({ title }: Props): JSX.Element {
         <div className="row">
           <div className='col-md-4'>
             <AddNewTaskContext.Provider value={addNewTask}>
-              <TaskForm/>
+              <TaskStateContext.Provider value={{ task: formTask, setTask: setFormTask }}>
+                <TaskForm/>
+              </TaskStateContext.Provider>
             </AddNewTaskContext.Provider>
           </div>
           <div className='col-md-8'>

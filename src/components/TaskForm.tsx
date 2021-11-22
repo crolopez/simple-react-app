@@ -1,32 +1,25 @@
 import { ChangeEvent, FormEvent, useContext, useRef, useState } from 'react'
-import { AddNewTaskContext } from '../Contexts'
-import { Task } from '../types/Task'
+import { AddNewTaskContext, TaskStateContext } from '../Contexts'
+import { defaultTask } from '../helpers/defaultTask'
 
 type HandleInputChange = ChangeEvent<HTMLInputElement|HTMLTextAreaElement>
 type HandleSave = FormEvent<HTMLFormElement>
 
-const initialState: Task = {
-  id: 0,
-  title: '',
-  description: '',
-  completed: false
-}
-
 export default function TaskForm(): JSX.Element {
-  const [task, setTask] = useState<Task>(initialState)
   const inputTitle = useRef<HTMLInputElement>(null)
   const addNewTask = useContext(AddNewTaskContext)
+  const formTaskState = useContext(TaskStateContext)
 
   const handleInputChange = (event: HandleInputChange) => {
     const {name, value} = event.target
     console.log(`[INPUT] ${name}: ${value}`)
-    setTask({...task, [name]: value})
+    formTaskState.setTask({...formTaskState.task, [name]: value})
   }
 
   const handleNewTask = (event: HandleSave) => {
     event.preventDefault()
-    addNewTask(task)
-    setTask(initialState)
+    addNewTask(formTaskState.task)
+    formTaskState.setTask(defaultTask)
     inputTitle.current?.focus()
   }
 
@@ -37,12 +30,12 @@ export default function TaskForm(): JSX.Element {
       <form onSubmit={handleNewTask}>
         <input name='title' type="text" placeholder='Write a title'
           className='form-control mb-3 shadow-none border-0'
-          onChange={handleInputChange} value={task.title}
+          onChange={handleInputChange} value={formTaskState.task.title}
           autoFocus ref={inputTitle}/>
 
         <textarea name="description" rows={2} placeholder='Write a description'
           className='form-control mb-3 shadow-none border-0'
-          onChange={handleInputChange} value={task.description}/>
+          onChange={handleInputChange} value={formTaskState.task.description}/>
 
         <button className='btn btn-success'>
           Save

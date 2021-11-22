@@ -10,6 +10,9 @@ export default function TaskCard(): JSX.Element {
     <div className='card card-body bg-primary rounded-0'>
       <h2>{task.title}</h2>
       <p>{task.description}</p>
+      <button className='btn btn-warning' onClick={() => deleteTask(task.id)}>
+        Update
+      </button>
       <button className='btn btn-danger' onClick={() => deleteTask(task.id)}>
         Delete
       </button>
