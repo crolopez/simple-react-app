@@ -5,30 +5,52 @@ import { Task } from './types/Task'
 import logo from './logo.svg'
 import TaskList from './components/TaskList'
 import TaskForm from './components/TaskForm'
-import { AddNewTaskContext, DeleteTaskContext, TaskContext, TasksContext, TaskStateContext } from './Contexts'
+import { DeleteTaskContext, TasksContext, TaskStateContext, TaskSubmitHandlerContext, UpdateTaskContext } from './Contexts'
 import { defaultTask } from './helpers/defaultTask'
 
 export function App({ title }: Props): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([])
   const [formTask, setFormTask] = useState<Task>(defaultTask)
 
+  // Component functions
   const getNewId = (): number => {
     return new Date().getTime()
   }
 
+  const addTask = (newTask: Task): void => {
+    setTasks([...tasks, newTask])
+  }
+
+  const replaceTask = (task: Task): void => {
+    setTasks(tasks.map(x => {
+      if (x.id !== task.id) return x
+      return task
+    }))
+  }
+
+  // Card component functions
   const deleteTask = (id: number): void => {
     setTasks(tasks.filter(task => task.id !== id))
   }
 
-  const addNewTask = (simpleTask: Task): void => {
-    const newTask = {
-      ...simpleTask,
-      id: getNewId(),
-      completed: false,
-    }
-    setTasks([...tasks, newTask])
+  const updateTask = (task: Task): void => {
+    setFormTask(task)
   }
 
+  // Form component functions
+  const taskSubmitHandler = (task: Task): void => {
+    if (task.id == 0) {
+      addTask({ ...task,
+        id: getNewId(),
+        completed: false,
+      })
+      return
+    }
+
+    replaceTask(task)
+  }
+
+  // Render
   return (
     <div className="bg-dark" style={{height: '100vh'}}>
       <nav className='navbar navbar-light bg-light'>
@@ -43,18 +65,20 @@ export function App({ title }: Props): JSX.Element {
       <main className='container p-4'>
         <div className="row">
           <div className='col-md-4'>
-            <AddNewTaskContext.Provider value={addNewTask}>
+            <TaskSubmitHandlerContext.Provider value={taskSubmitHandler}>
               <TaskStateContext.Provider value={{ task: formTask, setTask: setFormTask }}>
                 <TaskForm/>
               </TaskStateContext.Provider>
-            </AddNewTaskContext.Provider>
+            </TaskSubmitHandlerContext.Provider>
           </div>
           <div className='col-md-8'>
             <div className='row'>
               <DeleteTaskContext.Provider value={deleteTask}>
-                <TasksContext.Provider value={tasks}>
-                  <TaskList/>
-                </TasksContext.Provider>
+                <UpdateTaskContext.Provider value={updateTask}>
+                  <TasksContext.Provider value={tasks}>
+                    <TaskList/>
+                  </TasksContext.Provider>
+                </UpdateTaskContext.Provider>
               </DeleteTaskContext.Provider>
             </div>
           </div>

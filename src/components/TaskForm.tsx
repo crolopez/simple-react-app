@@ -1,13 +1,13 @@
-import { ChangeEvent, FormEvent, useContext, useRef, useState } from 'react'
-import { AddNewTaskContext, TaskStateContext } from '../Contexts'
+import { ChangeEvent, useContext, useRef } from 'react'
+import { TaskStateContext, TaskSubmitHandlerContext } from '../Contexts'
 import { defaultTask } from '../helpers/defaultTask'
 
 type HandleInputChange = ChangeEvent<HTMLInputElement|HTMLTextAreaElement>
-type HandleSave = FormEvent<HTMLFormElement>
+type ButtonClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 
 export default function TaskForm(): JSX.Element {
   const inputTitle = useRef<HTMLInputElement>(null)
-  const addNewTask = useContext(AddNewTaskContext)
+  const taskSubmitHandler = useContext(TaskSubmitHandlerContext)
   const formTaskState = useContext(TaskStateContext)
 
   const handleInputChange = (event: HandleInputChange) => {
@@ -16,9 +16,15 @@ export default function TaskForm(): JSX.Element {
     formTaskState.setTask({...formTaskState.task, [name]: value})
   }
 
-  const handleNewTask = (event: HandleSave) => {
-    event.preventDefault()
-    addNewTask(formTaskState.task)
+  const handleTaskSubmit = (e: ButtonClickEvent) => {
+    e.preventDefault()
+    taskSubmitHandler(formTaskState.task)
+    formTaskState.setTask(defaultTask)
+    inputTitle.current?.focus()
+  }
+
+  const handleClearTask = (e: ButtonClickEvent) => {
+    e.preventDefault()
     formTaskState.setTask(defaultTask)
     inputTitle.current?.focus()
   }
@@ -27,7 +33,7 @@ export default function TaskForm(): JSX.Element {
     <div className='card card-body bg-none'>
       <h1>Add Task</h1>
 
-      <form onSubmit={handleNewTask}>
+      <form>
         <input name='title' type="text" placeholder='Write a title'
           className='form-control mb-3 shadow-none border-0'
           onChange={handleInputChange} value={formTaskState.task.title}
@@ -37,8 +43,14 @@ export default function TaskForm(): JSX.Element {
           className='form-control mb-3 shadow-none border-0'
           onChange={handleInputChange} value={formTaskState.task.description}/>
 
-        <button className='btn btn-success'>
+        <button className='btn btn-success' onClick={handleTaskSubmit}>
           Save
+        </button>
+        <button className='btn btn-secondary' onClick={handleTaskSubmit}>
+          Update
+        </button>
+        <button className='btn btn-warning' onClick={handleClearTask}>
+          Clear
         </button>
       </form>
     </div>

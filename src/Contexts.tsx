@@ -6,8 +6,10 @@ import { defaultTask } from './helpers/defaultTask'
 import { Task } from './types/Task'
 import { TaskState } from './types/TaskState'
 
-const dummyAdd = (x: Task): void => {}
-export const AddNewTaskContext = React.createContext<(simpleTask: Task) => void>(dummyAdd)
+const dummyTaskFunc = (x: Task): void => {}
+export const TaskSubmitHandlerContext = React.createContext<(task: Task) => void>(dummyTaskFunc)
+
+export const UpdateTaskContext = React.createContext<(task: Task) => void>(dummyTaskFunc)
 
 const dummyDelete = (x: number): void => {}
 export const DeleteTaskContext = React.createContext<(id: number) => void>(dummyDelete)
